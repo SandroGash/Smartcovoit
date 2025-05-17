@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SmartCovoit - Le site du covoiturage intelligent.</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="preconnect" href="https://gstatics.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather: wght@700;900&family=Open+Sans:wght@300;500;600;700&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="root">
+            <nav id="main-nav" class="main-nav">
+                <button
+                class="nav-toggler"
+                aria-controls="main-navlist"
+                aria-expanded="false">
+                    <img src="ressources/hamburger.svg" alt="Ouvrir et fermer le menu">
+                </button>
+                <ul id="main-navlist">
+                    <li><a href="#/">Accueil</a></li>
+                    <li><a href="#/form">Inscription</a></li>
+                    <li><a href="#/destination">Trajet</a></li>
+                    <li><a href="#/contact">Contact</a></li>
+                    <li><a href="#/login">Connexion</a></li>
+                </ul>
+            </nav>
+            <div id="main-page"></div>
+            
+        </div>
+        <script type="module" src="scripts/router.js"></script>        
+</html>
