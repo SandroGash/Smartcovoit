@@ -8,7 +8,7 @@
 
 :root {
   /* palette */
-  --main-white: #dddddd;
+  --main-white: white;
   --shade-white: #d3d3d3;
   --main-black: #181818;
   --main-green: #679F5A;
@@ -32,8 +32,18 @@
 
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-  font-family: var(--base-font);
+  background-image: url('ressources/hero-backgr.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 /* Navigation */
@@ -43,26 +53,33 @@ body {
   z-index: 99;
   top: 0;
   width: 100%;
-  padding: 16px;
+  padding: 16px 20px;
   background-color: #679F5A;
-  
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-nav ul {
   display: flex;
   justify-content: center;
-  list-style-type: none;
+  align-items: center;
+  list-style: none;
+  flex-grow: 1;
+}
+
+.main-nav ul li {
+  margin: 0 12px;
 }
 
 .main-nav a {
-  margin: 0 12px;
   padding: 8px;
   border-radius: 2px;
   color: var(--main-white);
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
-  
 }
 
 .main-nav a:hover {
@@ -74,6 +91,23 @@ body {
   display: none;
 }
 
+.auth-button {
+  background: var(--main-white);
+  border: none;
+  border-radius: 4px;
+  color: var(--main-green);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px;
+  font-family: inherit;
+}
+
+.auth-button:hover {
+  background-color: var(--dark-green);
+  color: var(--main-white);
+}
+
 @media (max-width: 1024px) {
   .main-nav a {
     font-size: var(--fs-14);
@@ -83,40 +117,80 @@ body {
 
 @media (max-width: 525px) {
   .main-nav {
-    display: flex;
-    order: 1;
-  }
-  .main-nav ul {
-    padding: 52px 0 20px;
-    display: none;
-    flex-direction: column;
-  }
-  .main-nav ul li {
-    margin: 6px 0;    
-  }
-  .main-nav.active ul {
-    display: flex;
-  }
-  .nav-toggler {
-    order: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px 0;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
-    align-self: baseline;
-    background: none;
+    background-color: transparent;
+    opacity: 1;
+    z-index: 9999;
+  }
+
+  .nav-toggler {
+    display: flex;
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--main-green);
+    border-radius: 50%;
+    padding: 8px;
+    border: none;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  .nav-toggler img {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+
+  .main-nav ul {
+    position: fixed;
+    top: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #679F5A;
+    width: 90vw;
+    max-width: 320px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 2px;
+    border-radius: 8px;
+    z-index: 9998;
+  }
+
+  .main-nav ul li {
+    margin: 8px 0;
+  }
+
+  .main-nav.active ul {
+    display: flex;
   }
 }
+
+
+
+
+
 
 /* Hero */
 
 .hero {
-  min-height: 750px;
-  padding-top: 80px;
-  background-image: url(ressources/hero-backgr.jpg);
-  background-size: cover;
+  background-size: cover; 
   background-position: top;
+  min-height: 750px;
+  padding-top: 60px;
   position: relative;
   text-align: center;
 }
@@ -168,13 +242,12 @@ body {
   background-color: var(--main-green);
 }
 
-.push-down-hero {
-  display: none;
-}
-
-
 .hero p {
   color: white;
+}
+
+.hero label {
+  font-size: var(--fs-24);
 }
 
 @media (max-width: 1024px) {
@@ -189,32 +262,18 @@ body {
     padding: 8px 6px;
     font-size: var(--fs-14);
   }
-
-  .push-down-hero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--main-green);
-    border: 1px solid var(--dark-green);
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(50%);
-  }
-
-  .push-down-hero img {
-    width: 20px;
-    pointer-events: none;
-  }
+  
 }
 
 @media (max-width: 525px) {
   .hero {
     padding-top: 125px;
     min-height: 500px;
+  }
+
+  .hero h1 {
+    color: var(--dark-green);
+    padding-bottom: 70px;
   }
   .hero-link {
     padding: 6px;
@@ -231,24 +290,43 @@ body {
 /* SOUS-PAGES */
 
 #main-page {
+  padding-top: 60px;
   min-height: 200px;
-  color: white;  
-  padding-top: 40px; /* Ajuste selon la hauteur réelle de ta navbar */
+  color: white;
 }
 
-/* HOME-PAGE */
+/* ACCUEIL */
 
 .home-page {
-  margin: 60px 400px;
-  padding: 20px 10px;
+  margin: 60px auto;
+  padding: 10px 10px;
   background-color: var(--dark-green);
-  opacity: .6;
+  opacity: 0.6;
   border-radius: 5px;
+  max-width: 1000px;
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    margin: 40px 20px;
+    padding: 16px;
+    width: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page {
+    margin: 20px 10px;
+    padding: 12px;
+    width: calc(1000% - 20px);
+  }
 }
 
 .home-page ul li {
   list-style-type: none;
 }
+
 
 /* LIEN INSCRIPTION */
 
@@ -273,8 +351,7 @@ body {
   color: var(--main-green);
   max-width: 500px;
   margin: 40px auto;
-  padding: 20px;
-  border: 1px solid var(--main-green);
+  padding: 20px;  
   border-radius: 8px;
   background-color: #f9f9f9;
 }
@@ -286,16 +363,31 @@ body {
 .form-group label {
   display: block;
   margin-bottom: 6px;
-  font-weight: 600;
+  font-weight: bold;
+  font-size: large;
 }
 
 .form-group input {
   width: 100%;
   padding: 8px;
   border-radius: 4px;
+  font-size: medium;  
   border: 1px solid var(--dark-green);
 }
 
+#car-style {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: small;
+  border: 1px solid var(--dark-green);
+  text-align: center;
+  text-align-last: center; 
+  height: 40px;
+  appearance: none; 
+  background-color: white; 
+
+}
 .form-inscription p {
   color: var(--main-green);
 }
@@ -341,6 +433,8 @@ button[type="submit"]:hover {
   margin: 0 auto;
   padding: 20px;
   color: var(--dark-green);
+  background: #f9f9f9;
+  border-radius: 8px;
 }
 
 .form-login input[type="email"],
@@ -376,9 +470,11 @@ button[type="submit"]:hover {
 
 .form-contact {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 80px auto;
   padding: 20px;
   color: var(--dark-green);
+  background: #f9f9f9;
+  border-radius: 8px;
 }
 
 .form-contact input,
@@ -400,6 +496,99 @@ button[type="submit"]:hover {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.form-group label {
+  font-weight: 40px;
+}
+
+/* TRAJETS */
+
+.search-container {
+  margin: 80px auto;
+  max-width: 900px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.search-container input,
+.search-container button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;  
+}
+
+.search-container input {
+  color: var(--dark-green);
+  border: 1px solid var(--dark-green);
+}
+
+.search-container label {
+  color: var(--main-green);
+}
+
+.suggestions {
+  background: white;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 10;
+  width: calc(100% - 42px);
+}
+
+.suggestions div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions div:hover {
+  background-color: #f9f9f9;
+}
+
+.search-button {
+  background-color: var(--main-green);
+  color: var(--main-white);
+  border-radius: 6px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+}
+
+.search-button:hover {
+  background-color: var(--dark-green);
+}
+
+/* Grand écran */
+@media (min-width: 768px) {
+  #search-form {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 100px;
+    min-width: 100px;
+  }
+
+  .search-button {
+    height: 42px;
+    margin-top: auto;
+  }
+}
+
+
+
+
+
+
 
 /* ERREUR 404 */
 

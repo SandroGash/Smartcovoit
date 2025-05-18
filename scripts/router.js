@@ -1,3 +1,5 @@
+import { updateAuthButton } from "./navbarButton.js";
+
 const routes = {
     "/": "/pages/home.html",
     "/form": "/pages/form.html",
@@ -36,8 +38,16 @@ const routes = {
   } catch (err) {
     document.getElementById("main-page").innerHTML = "<h2>Erreur de chargement</h2>";
   }
+  
 };
   
-  window.addEventListener("hashchange", handleLocation);
-  window.addEventListener("DOMContentLoaded", handleLocation);
+  window.addEventListener("hashchange", () => {
+    handleLocation();
+    updateAuthButton();
+  });
+  window.addEventListener("DOMContentLoaded", () => {
+    handleLocation();
+    updateAuthButton();
+  });
+
   

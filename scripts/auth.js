@@ -5,6 +5,7 @@ export async function loginUser(email, password) {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: "include", //cookie HttpOnly
       body: JSON.stringify({ email, password })
     });
 
@@ -12,11 +13,12 @@ export async function loginUser(email, password) {
 
     const data = await response.json();
 
-    // Sauvegarder le token et le rôle dans localStorage
-    localStorage.setItem("jwt", data.token);
+    // Stockage JWT dans un cookie HttpOnly via l’API
+    // Stockage du token CSRF dans localStorage
+    localStorage.setItem("csrfToken", data.csrfToken);
     localStorage.setItem("role", data.role);
 
-    // Rediriger vers la page personnelle en fonction du rôle
+    // Rediriger selon rôle
     redirectToRolePage(data.role);
   } catch (error) {
     console.error("Erreur de connexion :", error);
@@ -24,6 +26,9 @@ export async function loginUser(email, password) {
   }
 }
 
+/**
+ * Redirige vers la page en fonction du rôle utilisateur
+ */
 export function redirectToRolePage(role) {
   switch (role) {
     case "passager":
@@ -43,14 +48,34 @@ export function redirectToRolePage(role) {
   }
 }
 
-// Fonction pour vérifier si l'utilisateur est connecté
+/**
+ * Vérifie si l'utilisateur est connecté (token CSRF en localStorage)
+ */
 export function isLoggedIn() {
-  return !!localStorage.getItem("jwt");
+  return !!localStorage.getItem("csrfToken");
 }
 
-// Fonction pour se déconnecter
-export function logout() {
-  localStorage.removeItem("jwt");
+/**
+ * Se déconnecter : appelle API logout, nettoie stockage local, redirige vers login
+ */
+export async function logout() {
+  try {
+    await fetch("http://localhost/api/logout.php", {
+      method: "POST",
+      credentials: "include"
+    });
+  } catch (error) {
+    console.error("Erreur logout", error);
+  }
+
+  localStorage.removeItem("csrfToken");
   localStorage.removeItem("role");
   window.location.hash = "#/login";
+}
+
+/**
+ * Fonction utilitaire pour récupérer le token CSRF à envoyer dans les headers
+ */
+export function getCsrfToken() {
+  return localStorage.getItem("csrfToken");
 }
