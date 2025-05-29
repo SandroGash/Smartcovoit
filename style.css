@@ -301,7 +301,7 @@ body {
   margin: 60px auto;
   padding: 10px 10px;
   background-color: var(--dark-green);
-  opacity: 0.6;
+  opacity: 0.8;
   border-radius: 5px;
   max-width: 1000px;
   width: 50%;
@@ -430,7 +430,7 @@ button[type="submit"]:hover {
 
 .form-login {
   max-width: 400px;
-  margin: 0 auto;
+  margin: 30px auto;
   padding: 20px;
   color: var(--dark-green);
   background: #f9f9f9;
@@ -460,9 +460,15 @@ button[type="submit"]:hover {
   color: var(--dark-green);
 }
 
+.form-login p {
+  color: var(--main-green);
+}
+
 .form-login p a:hover {
   color: var(--main-green);
 }
+
+
 
 
 
@@ -472,7 +478,7 @@ button[type="submit"]:hover {
   max-width: 500px;
   margin: 80px auto;
   padding: 20px;
-  color: var(--dark-green);
+  color: var(--main-green);
   background: #f9f9f9;
   border-radius: 8px;
 }
@@ -501,6 +507,7 @@ button[type="submit"]:hover {
   font-weight: 40px;
 }
 
+
 /* TRAJETS */
 
 .search-container {
@@ -509,6 +516,7 @@ button[type="submit"]:hover {
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
+  position: relative;
 }
 
 .search-container input,
@@ -516,7 +524,8 @@ button[type="submit"]:hover {
   width: 100%;
   margin: 10px 0;
   padding: 10px;
-  font-size: 16px;  
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 .search-container input {
@@ -526,23 +535,35 @@ button[type="submit"]:hover {
 
 .search-container label {
   color: var(--main-green);
+  font-weight: 600;
 }
 
 .suggestions {
   background: white;
   border-radius: 4px;
   position: absolute;
-  z-index: 10;
-  width: calc(100% - 42px);
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  max-height: 180px;
+  overflow-y: auto;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  color: var(--dark-green);
 }
 
 .suggestions div {
   padding: 10px;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .suggestions div:hover {
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
+ 
 }
 
 .search-button {
@@ -555,10 +576,16 @@ button[type="submit"]:hover {
   justify-content: center;
   gap: 6px;
   padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .search-button:hover {
   background-color: var(--dark-green);
+}
+
+.form-group {
+  position: relative; /* <- Ceci permet à .suggestions de s’ancrer sous l’input */
 }
 
 /* Grand écran */
@@ -576,13 +603,16 @@ button[type="submit"]:hover {
     flex-direction: column;
     flex: 1 1 100px;
     min-width: 100px;
+    position: relative; /* IMPORTANT : pour que les suggestions s’alignent sous l’input dans chaque groupe */
   }
 
   .search-button {
     height: 42px;
     margin-top: auto;
+    width: auto; /* Pas 100% ici, pour pas qu’il prenne toute la ligne */
   }
 }
+
 
 
 

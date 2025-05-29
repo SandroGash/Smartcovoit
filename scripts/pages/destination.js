@@ -1,59 +1,71 @@
-function createSuggestionList(inputElement, listElement) {
-  inputElement.addEventListener("input", async () => {
-    const query = inputElement.value;
-    if (query.length < 2) {
-      listElement.innerHTML = "";
-      return;
+export function init() {
+  const inputDepart = document.getElementById("ville-depart");
+  const suggestionsDepart = document.getElementById("suggestions-depart");
+  const inputArrivee = document.getElementById("ville-arrivee");
+  const suggestionsArrivee = document.getElementById("suggestions-arrivee");
+
+  if (inputDepart && suggestionsDepart) {
+    createSuggestionList(inputDepart, suggestionsDepart);
+  }
+
+  if (inputArrivee && suggestionsArrivee) {
+    createSuggestionList(inputArrivee, suggestionsArrivee);
+  }
+
+  //masquer les suggestions
+  document.addEventListener("click", (e) => {
+    if (
+      !inputDepart.contains(e.target) &&
+      !suggestionsDepart.contains(e.target)
+    ) {
+      suggestionsDepart.innerHTML = "";
     }
 
-    try {
-      const response = await fetch(`https://geo.api.gouv.fr/communes?nom=${query}&fields=nom&boost=population&limit=5`);
-      const villes = await response.json();
-
-      listElement.innerHTML = "";
-      villes.forEach(ville => {
-        const div = document.createElement("div");
-        div.textContent = ville.nom;
-        div.onclick = () => {
-          inputElement.value = ville.nom;
-          listElement.innerHTML = "";
-        };
-        listElement.appendChild(div);
-      });
-    } catch (error) {
-      console.error("Erreur lors de la récupération des villes :", error);
+    if (
+      !inputArrivee.contains(e.target) &&
+      !suggestionsArrivee.contains(e.target)
+    ) {
+      suggestionsArrivee.innerHTML = "";
     }
   });
 }
 
-export function init() {
-  const container = document.createElement("div");
-  container.className = "search-container";
-  container.innerHTML = `
-    <h2>Rechercher un trajet</h2>
-    <label>Ville de départ</label>
-    <input type="text" id="ville-depart" autocomplete="off" />
-    <div id="suggestions-depart" class="suggestions"></div>
+function createSuggestionList(inputElement, suggestionContainer) {
+  inputElement.addEventListener("input", async () => {
+    const query = inputElement.value.trim();
 
-    <label>Ville d'arrivée</label>
-    <input type="text" id="ville-arrivee" autocomplete="off" />
-    <div id="suggestions-arrivee" class="suggestions"></div>
+    if (query.length < 2) {
+      suggestionContainer.innerHTML = "";
+      return;
+    }
 
-    <label>Date de départ</label>
-    <input type="date" id="date-depart" />
+    try {
+      const response = await fetch(
+        `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(
+          query
+        )}&fields=nom&boost=population&limit=5`
+      );
+      const villes = await response.json();
 
-    <button>Rechercher</button>
-  `;
-  document.getElementById("main-page").appendChild(container);
+      suggestionContainer.innerHTML = "";
 
-  createSuggestionList(
-    document.getElementById("ville-depart"),
-    document.getElementById("suggestions-depart")
-  );
-  createSuggestionList(
-    document.getElementById("ville-arrivee"),
-    document.getElementById("suggestions-arrivee")
-  );
+      villes.forEach((ville) => {
+        const div = document.createElement("div");
+        div.textContent = ville.nom;
+        div.addEventListener("click", () => {
+          inputElement.value = ville.nom;
+          suggestionContainer.innerHTML = "";
+        });
+        suggestionContainer.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des villes :", error);
+      suggestionContainer.innerHTML = "<div>Erreur de chargement</div>";
+    }
+  });
 }
+
+
+
 
 
